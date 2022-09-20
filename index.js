@@ -1,17 +1,35 @@
 const resultBlock = document.querySelector("#result");
+const questionAmount = document.querySelector("#question-amount");
+const clickButton = document.querySelector("#click");
+const getTasksClickButton = document.querySelector("#get-tasks");
 
-const cliclkButton = document.querySelector("#click");
+clickButton.addEventListener("click", () => {
+  const promise = getQuestions(questionAmount.value);
+  promise.then(onQuestionsReceived);
+});
 
-cliclkButton.addEventListener("click", makeRequest);
+getTasksClickButton.addEventListener("click", () => {
+  const promise = getTasks();
+  promise.then(onTaskReceived);
+});
 
-function makeRequest() {
-  $.ajax("https://opentdb.com/api.php?amount=1", {
-    success: function (data) {
-      data.results.forEach((el) => {
-        console.log(el);
-        document.getElementById("question").innerHTML = el.question;
-        document.getElementById("answer").innerHTML = el.correct_answer;
-      });
-    },
+createTask("Закончить курс AJAX").then((data) => {
+  console.log(data);
+});
+
+function onTaskReceived(tasks) {
+  console.log(tasks);
+  tasks.forEach((task) => {
+    const li = document.createElement("li");
+    li.innerHTML = task.title;
+    document.querySelector("#tasks").appendChild(li);
+  });
+}
+
+function onQuestionsReceived(data) {
+  data.results.forEach((el) => {
+    const div = document.createElement("div");
+    div.innerHTML = el.question + "(" + el.correct_answer + ")";
+    document.querySelector("body").appendChild(div);
   });
 }
