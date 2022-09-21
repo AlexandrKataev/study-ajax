@@ -16,7 +16,33 @@ function getTasks() {
 
 function createTask(title) {
   const promise = axios.post(
-    `https://632a05584c626ff832cfe7bb.mockapi.io/todo`
+    `https://632a05584c626ff832cfe7bb.mockapi.io/todo`,
+    {
+      title: title,
+      done: false,
+    }
+  );
+  return promise.then((data) => {
+    return data.data;
+  });
+}
+
+function updateTask(title, id) {
+  const promise = axios.put(
+    `https://632a05584c626ff832cfe7bb.mockapi.io/todo/${id}`,
+    {
+      title: title,
+      done: true,
+    }
+  );
+  return promise.then((data) => {
+    return data.data;
+  });
+}
+
+function deleteTask(id) {
+  const promise = axios.delete(
+    `https://632a05584c626ff832cfe7bb.mockapi.io/todo/${id}`
   );
   return promise.then((data) => {
     return data.data;
